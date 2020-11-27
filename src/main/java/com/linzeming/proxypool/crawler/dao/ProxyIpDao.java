@@ -2,43 +2,38 @@ package com.linzeming.proxypool.crawler.dao;
 
 import com.linzeming.proxypool.crawler.entity.ProxyIp;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ProxyIpDao {
-    void addIntoAnonymityCheckQueue(ProxyIp proxyIp);
-
     void addIntoValidateProxiesQueue(ProxyIp proxyIp);
 
-    void addIntoBlackSet(ProxyIp proxyIp);
-
-    ProxyIp takeFromAnonymityCheckQueue();
+    void addIntoValidateProxiesQueueMany(List<ProxyIp> proxyIps);
 
     ProxyIp takeFromValidateProxiesQueue();
 
-    void addIntoValidatedProxies(ProxyIp proxyIp);
-
-    boolean existsInAnonymityCheckQueue(ProxyIp proxyIp);
+    void addIntoProxiesZsetNx(ProxyIp proxyIp);
 
     boolean existsInValidateProxiesQueue(ProxyIp proxyIp);
 
-    boolean existsInValidatedProxies(ProxyIp proxyIp);
+    boolean existsInProxiesZset(ProxyIp proxyIp);
 
-    boolean existsInBlackSet(ProxyIp proxyIp);
+    void setLastValidateTime(ProxyIp proxyIp);
 
-    void setValidateTime(ProxyIp proxyIp, long validateTime);
-
-    long getValidateTime(ProxyIp proxyIp);
+    long getLastValidateTime(ProxyIp proxyIp);
 
     long countValidateProxiesQueue();
 
-    Set<String> getRangeValidatedProxiesByScore(Double minScore, Double maxScore);
+    Set<String> getRangeProxiesByScore(Double minScore, Double maxScore);
 
-    double getValidatedProxyScore(ProxyIp proxyip);
+    double getProxyScore(ProxyIp proxyip);
 
-    void decreaseValidatedProxyScore(ProxyIp proxyIp, double deltaScore);
+    void decreaseProxyScore(ProxyIp proxyIp, double deltaScore);
 
-    void increaseValidatedProxyScore(ProxyIp proxyIp, double deltaScore);
+    void increaseProxyScore(ProxyIp proxyIp, double deltaScore);
 
-    void setValidatedProxyScore(ProxyIp proxyIp, double targerScore);
+    void setProxyScore(ProxyIp proxyIp);
+
+    void addValidatePorxyResult(ProxyIp proxyIp);
 
 }

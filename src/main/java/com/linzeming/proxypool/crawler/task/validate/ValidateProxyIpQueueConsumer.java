@@ -1,11 +1,12 @@
-package com.linzeming.proxypool.crawler.task.validateproxy;
+package com.linzeming.proxypool.crawler.task.validate;
 
 import com.linzeming.proxypool.crawler.dao.ProxyIpDao;
 import com.linzeming.proxypool.crawler.entity.ProxyIp;
 import com.linzeming.proxypool.crawler.util.Constants;
 import com.linzeming.proxypool.crawler.util.ProxyUtils;
 import com.linzeming.proxypool.crawler.util.SpringUtil;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 public class ValidateProxyIpQueueConsumer implements Runnable {
     ProxyIpDao proxyIpDao = (ProxyIpDao) SpringUtil.getBean("proxyIpDao");
+    Logger logger  = LoggerFactory.getLogger(ValidateProxyIpQueueConsumer.class);
 
     @Override
     public void run() {
@@ -28,19 +30,26 @@ public class ValidateProxyIpQueueConsumer implements Runnable {
                     continue;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    continue;
                 }
             }
             //非null
-            proxyIpDao.setValidateTime(proxyIp, System.currentTimeMillis());
-            int i = ProxyUtils.validateConnectivity(proxyIp);
-            if (i == 0) {
+            proxyIp.setValidateTimestamp(System.currentTimeMillis());
+            proxyIpDao.setLastValidateTime(proxyIp);
+            boolean i = ProxyUtils.validateProxy(proxyIp);
+            if (i) {
                 //等于0是成功 有效的
-                proxyIpDao.setValidatedProxyScore(proxyIp, Constants.validatedProxyMaxScore);
-                System.out.println("重新验证代理结果: " + proxyIp + " - " + Constants.validatedProxyMaxScore);
+                proxyIp.setScore(Constants.validatedProxyMaxScore);
+                proxyIpDao.setProxyScore(proxyIp);
+                proxyIp.setLastValidateResult(true);
+                proxyIpDao.addValidatePorxyResult(proxyIp);
+                logger.info("重新验证代理结果: " + proxyIp + " - " + Constants.validatedProxyMaxScore);
             } else {
                 //其他无效
-                proxyIpDao.decreaseValidatedProxyScore(proxyIp, 1.0);
-                System.out.println("重新验证代理结果: " + proxyIp + " - " + "decreaseValidatedProxyScore 1.0");
+                proxyIpDao.decreaseProxyScore(proxyIp, 1.0);
+                proxyIp.setLastValidateResult(false);
+                proxyIpDao.addValidatePorxyResult(proxyIp);
+                logger.info("重新验证代理结果: " + proxyIp + " - " + "decreaseValidatedProxyScore 1.0");
             }
         }
     }

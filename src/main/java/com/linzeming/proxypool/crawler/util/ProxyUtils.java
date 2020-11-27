@@ -8,6 +8,9 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -29,18 +32,28 @@ public final class ProxyUtils {
         return null;
     }
 
+    public static List<ProxyIp> convertProxysStringSetToList(Set<String> proxyStrings) {
+        if (proxyStrings == null) return null;
+        ArrayList<ProxyIp> rtnList = new ArrayList<>();
+        for (String proxyString : proxyStrings) {
+            rtnList.add(convertProxy(proxyString));
+        }
+        return rtnList;
+    }
+
     /**
      * 验证匿名性静态方法
      * a.如果origin中包含自己真实的IP，则为透明代理；
      * b.如果响应中包含Proxy-Connection参数，则为匿名代理；
      * c.其他情况则为高匿代理；
+     *
      * @param proxyIp
      * @return
      */
-    public static boolean validateAnonymity(ProxyIp proxyIp) {
+    public static boolean validateProxy(ProxyIp proxyIp) {
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyIp.getIp(), proxyIp.getPort()));
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(Constants.validateAnonymityTimeout, TimeUnit.SECONDS)
+                .connectTimeout(Constants.validateTimeout, TimeUnit.SECONDS)
                 .proxy(proxy)
                 .build();
 
@@ -61,14 +74,4 @@ public final class ProxyUtils {
         }
     }
 
-
-    public static int validateConnectivity(ProxyIp proxyIp) {
-        //先直接用这个返回 todo
-        boolean b = validateAnonymity(proxyIp);
-        if (b) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
 }

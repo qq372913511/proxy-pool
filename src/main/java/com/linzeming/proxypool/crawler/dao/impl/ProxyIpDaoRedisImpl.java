@@ -4,12 +4,14 @@ import com.linzeming.proxypool.crawler.dao.ProxyIpDao;
 import com.linzeming.proxypool.crawler.entity.ProxyIp;
 import com.linzeming.proxypool.crawler.util.Constants;
 import com.linzeming.proxypool.crawler.util.ProxyUtils;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.params.ZAddParams;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,13 +21,6 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     JedisPool jedisPool;
 
     @Override
-    public void addIntoAnonymityCheckQueue(ProxyIp proxyIp) {
-        Jedis resource = jedisPool.getResource();
-        resource.sadd(Constants.redisAnonymityCheckQueueSet, proxyIp.getFormattedIpPort());
-        resource.close();
-    }
-
-    @Override
     public void addIntoValidateProxiesQueue(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
         resource.sadd(Constants.redisValidateProxiesQueueSet, proxyIp.getFormattedIpPort());
@@ -33,19 +28,14 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public void addIntoBlackSet(ProxyIp proxyIp) {
+    public void addIntoValidateProxiesQueueMany(List<ProxyIp> proxyIps) {
         Jedis resource = jedisPool.getResource();
-        resource.sadd(Constants.redisProxiesBlackSet, proxyIp.getFormattedIpPort());
+        Pipeline p = resource.pipelined();
+        for (ProxyIp proxyIp: proxyIps){
+            resource.sadd(Constants.redisValidateProxiesQueueSet, proxyIp.getFormattedIpPort());
+        }
+        p.syncAndReturnAll();
         resource.close();
-    }
-
-    @Override
-    public ProxyIp takeFromAnonymityCheckQueue() {
-        Jedis resource = jedisPool.getResource();
-        String spop = resource.spop(Constants.redisAnonymityCheckQueueSet);
-        ProxyIp proxyIp = ProxyUtils.convertProxy(spop);
-        resource.close();
-        return proxyIp;
     }
 
     @Override
@@ -58,19 +48,14 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public void addIntoValidatedProxies(ProxyIp proxyIp) {
+    public void addIntoProxiesZsetNx(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
-        resource.zadd(Constants.redisValidatedProxiesZset, proxyIp.getScore(), proxyIp.getFormattedIpPort());
+        ZAddParams zAddParams = new ZAddParams();
+        zAddParams.nx();
+        resource.zadd(Constants.redisValidatedProxiesZset, proxyIp.getScore(), proxyIp.getFormattedIpPort(), zAddParams);
         resource.close();
     }
 
-    @Override
-    public boolean existsInAnonymityCheckQueue(ProxyIp proxyIp) {
-        Jedis resource = jedisPool.getResource();
-        Boolean sismember = resource.sismember(Constants.redisAnonymityCheckQueueSet, proxyIp.getFormattedIpPort());
-        resource.close();
-        return sismember;
-    }
 
     @Override
     public boolean existsInValidateProxiesQueue(ProxyIp proxyIp) {
@@ -81,7 +66,7 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public boolean existsInValidatedProxies(ProxyIp proxyIp) {
+    public boolean existsInProxiesZset(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
         Long zrank = resource.zrank(Constants.redisValidatedProxiesZset, proxyIp.getFormattedIpPort());
         resource.close();
@@ -89,24 +74,16 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public boolean existsInBlackSet(ProxyIp proxyIp) {
+    public void setLastValidateTime(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
-        Boolean sismember = resource.sismember(Constants.redisProxiesBlackSet, proxyIp.getFormattedIpPort());
-        resource.close();
-        return sismember;
-    }
-
-    @Override
-    public void setValidateTime(ProxyIp proxyIp, long validateTime) {
-        Jedis resource = jedisPool.getResource();
-        resource.hset(Constants.redisProxiesValidateTimeHashes, proxyIp.getFormattedIpPort(), String.valueOf(validateTime));
+        resource.hset(Constants.redisProxiesValidateLastTimeHashes, proxyIp.getFormattedIpPort(), String.valueOf(proxyIp.getValidateTimestamp()));
         resource.close();
     }
 
     @Override
-    public long getValidateTime(ProxyIp proxyIp) {
+    public long getLastValidateTime(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
-        String hget = resource.hget(Constants.redisProxiesValidateTimeHashes, proxyIp.getFormattedIpPort());
+        String hget = resource.hget(Constants.redisProxiesValidateLastTimeHashes, proxyIp.getFormattedIpPort());
         resource.close();
         if (hget == null) {
             return 0L;
@@ -124,7 +101,7 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public Set<String> getRangeValidatedProxiesByScore(Double minScore, Double maxScore) {
+    public Set<String> getRangeProxiesByScore(Double minScore, Double maxScore) {
         Jedis resource = jedisPool.getResource();
         Set<String> strings = resource.zrangeByScore(Constants.redisValidatedProxiesZset, minScore, maxScore);
         resource.close();
@@ -132,7 +109,7 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public double getValidatedProxyScore(ProxyIp proxyip) {
+    public double getProxyScore(ProxyIp proxyip) {
         Jedis resource = jedisPool.getResource();
         Double score = resource.zscore(Constants.redisValidatedProxiesZset, proxyip.getFormattedIpPort());
         resource.close();
@@ -140,23 +117,30 @@ public class ProxyIpDaoRedisImpl implements ProxyIpDao {
     }
 
     @Override
-    public void decreaseValidatedProxyScore(ProxyIp proxyIp, double deltaScore) {
+    public void decreaseProxyScore(ProxyIp proxyIp, double deltaScore) {
         Jedis resource = jedisPool.getResource();
         resource.zincrby(Constants.redisValidatedProxiesZset, -1 * deltaScore, proxyIp.getFormattedIpPort());
         resource.close();
     }
 
     @Override
-    public void increaseValidatedProxyScore(ProxyIp proxyIp, double deltaScore) {
+    public void increaseProxyScore(ProxyIp proxyIp, double deltaScore) {
         Jedis resource = jedisPool.getResource();
         resource.zincrby(Constants.redisValidatedProxiesZset, deltaScore, proxyIp.getFormattedIpPort());
         resource.close();
     }
 
     @Override
-    public void setValidatedProxyScore(ProxyIp proxyIp, double targerScore) {
+    public void setProxyScore(ProxyIp proxyIp) {
         Jedis resource = jedisPool.getResource();
-        resource.zadd(Constants.redisValidatedProxiesZset, targerScore, proxyIp.getFormattedIpPort());
+        resource.zadd(Constants.redisValidatedProxiesZset, proxyIp.getScore(), proxyIp.getFormattedIpPort());
+        resource.close();
+    }
+
+    @Override
+    public void addValidatePorxyResult(ProxyIp proxyIp) {
+        Jedis resource = jedisPool.getResource();
+        resource.lpush(Constants.redisProxiesValidateAllTimeList, proxyIp.getFormattedIpValidateTimestampResult());
         resource.close();
     }
 }
