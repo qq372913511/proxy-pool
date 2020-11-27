@@ -1,3 +1,3 @@
 # proxy-pool
 proxy-pool
-最简单版本 代理池能维护200个有效IP左右
+500个有效，带简单web api，可以用于提取代理
