@@ -1,7 +1,5 @@
 package com.linzeming.proxypool.crawler.util;
 
-import org.jcp.xml.dsig.internal.dom.DOMUtils;
-
 public class Constants {
     private Constants() {
     }
