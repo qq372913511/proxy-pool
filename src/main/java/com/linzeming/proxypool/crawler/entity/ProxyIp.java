@@ -4,7 +4,8 @@ public class ProxyIp {
     private String ip;
     private Integer port;
     private Double score;
-
+    private Long validateTimestamp;
+    private boolean lastValidateResult;
 
     public ProxyIp() {
     }
@@ -13,18 +14,48 @@ public class ProxyIp {
         this.ip = ip;
         this.port = port;
         this.score = 0.0;
+        this.validateTimestamp = 0L;
     }
 
     public ProxyIp(String ip, Integer port, Double score) {
         this.ip = ip;
         this.port = port;
         this.score = score;
+        this.validateTimestamp = 0L;
     }
 
     public ProxyIp(String ip, String port) {
         this.ip = ip;
         this.port = Integer.valueOf(port);
         this.score = 0.0;
+        this.validateTimestamp = 0L;
+    }
+
+    public ProxyIp(String ip, Integer port, Double score, Long validateTimestamp) {
+        this.ip = ip;
+        this.port = port;
+        this.score = score;
+        this.validateTimestamp = validateTimestamp;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public boolean isLastValidateResult() {
+        return lastValidateResult;
+    }
+
+    public void setLastValidateResult(boolean lastValidateResult) {
+        this.lastValidateResult = lastValidateResult;
+    }
+
+    public Long getValidateTimestamp() {
+        return validateTimestamp;
+    }
+
+    public void setValidateTimestamp(Long validateTimestamp) {
+        this.validateTimestamp = validateTimestamp;
     }
 
     public String getIp() {
@@ -51,16 +82,26 @@ public class ProxyIp {
         this.score = score;
     }
 
+    public String getFormattedIpPort() {
+        return ip + ":" + port;
+    }
+
+    public String getFormattedIpValidateTimestamp() {
+        return ip + ":" + validateTimestamp;
+    }
+
+    public String getFormattedIpValidateTimestampResult() {
+        return ip + ":" + validateTimestamp + ":" + lastValidateResult;
+    }
+
     @Override
     public String toString() {
-        return "Proxy{" +
+        return "ProxyIp{" +
                 "ip='" + ip + '\'' +
                 ", port=" + port +
                 ", score=" + score +
+                ", validateTimestamp=" + validateTimestamp +
+                ", lastValidateResult=" + lastValidateResult +
                 '}';
-    }
-
-    public String getFormattedIpPort() {
-        return ip + ":" + port;
     }
 }
