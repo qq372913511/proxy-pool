@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/proxy-pool.iml" filepath="$PROJECT_DIR$/.idea/proxy-pool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proxypoolweb/proxy-pool-web.iml" filepath="$PROJECT_DIR$/proxypoolweb/proxy-pool-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proxypoolcrawler/proxyIp-pool.iml" filepath="$PROJECT_DIR$/proxypoolcrawler/proxyIp-pool.iml" />
+    </modules>
+  </component>
+</project>
