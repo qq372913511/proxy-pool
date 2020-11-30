@@ -1,5 +1,5 @@
-package com.linzeming.proxypool.crawler.service;
-
-public interface ProxyIpService {
-
-}
+//package com.linzeming.proxypool.crawler.service;
+//
+//public interface ProxyIpService {
+//
+//}

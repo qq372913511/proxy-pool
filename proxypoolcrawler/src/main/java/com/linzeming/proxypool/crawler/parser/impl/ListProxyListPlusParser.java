@@ -52,7 +52,7 @@ public class ListProxyListPlusParser implements Parser {
             }
             String ip = element.select("td:nth-child(2)").text().replace(" ","");
             String port = element.select("td:nth-child(3)").text().replace(" ","");
-            ProxyIp proxyIp = new ProxyIp(ip, port);
+            ProxyIp proxyIp = new ProxyIp(ip, Integer.parseInt(port));
             proxies.add(proxyIp);
         }
         return proxies;
