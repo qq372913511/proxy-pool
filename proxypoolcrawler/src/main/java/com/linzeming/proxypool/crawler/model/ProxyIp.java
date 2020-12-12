@@ -1,25 +1,72 @@
 package com.linzeming.proxypool.crawler.model;
 
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.io.Serializable;
 
-public class ProxyIp {
-    @TableId(type = IdType.AUTO)
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author linzeming
+ * @since 2020-11-30
+ */
+public class ProxyIp implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * primary key
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private String ip;
-    private Integer port;
-    private String country;
-    private String city;
-    private Integer isHttps;
-    private Integer anonymity;
-    private Integer connectionSpeed;
-    private Date gmtLastValidate;
-    private Date gmtCreate;
-    private Date gmtModified;
 
+    /**
+     * ip address
+     */
+    private String ip;
+
+    /**
+     * port
+     */
+    private Integer port;
+
+    private String country;
+
+    private String city;
+
+    /**
+     * 是否支持https
+     */
+    private Integer isHttps;
+
+    /**
+     * 匿名度，0-透明，1-普通匿名，2-高度匿名
+     */
+    private Integer anonymity;
+
+    /**
+     * 0代表超时，单位是ms
+     */
+    private Integer connectionSpeed;
+
+    /**
+     * 上次验证时间
+     */
+    private LocalDateTime gmtLastValidate;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime gmtCreate;
+
+    /**
+     * 修改时间
+     */
+    private LocalDateTime gmtModified;
 
     public ProxyIp() {
     }
@@ -27,23 +74,6 @@ public class ProxyIp {
     public ProxyIp(String ip, Integer port) {
         this.ip = ip;
         this.port = port;
-    }
-
-    @Override
-    public String toString() {
-        return "ProxyIp{" +
-                "id=" + id +
-                ", ip='" + ip + '\'' +
-                ", port=" + port +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", isHttps=" + isHttps +
-                ", anonymity=" + anonymity +
-                ", connectionSpeed=" + connectionSpeed +
-                ", gmtLastValidate=" + gmtLastValidate +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                '}';
     }
 
     public Integer getId() {
@@ -110,31 +140,48 @@ public class ProxyIp {
         this.connectionSpeed = connectionSpeed;
     }
 
-    public Date getGmtLastValidate() {
+    public LocalDateTime getGmtLastValidate() {
         return gmtLastValidate;
     }
 
-    public void setGmtLastValidate(Date gmtLastValidate) {
+    public void setGmtLastValidate(LocalDateTime gmtLastValidate) {
         this.gmtLastValidate = gmtLastValidate;
     }
 
-    public Date getGmtCreate() {
+    public LocalDateTime getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(Date gmtCreate) {
+    public void setGmtCreate(LocalDateTime gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
-    public Date getGmtModified() {
+    public LocalDateTime getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModified(Date gmtModified) {
+    public void setGmtModified(LocalDateTime gmtModified) {
         this.gmtModified = gmtModified;
     }
 
-    public String formattedIpPort() {
+    @Override
+    public String toString() {
+        return "ProxyIp{" +
+                "id=" + id +
+                ", ip=" + ip +
+                ", port=" + port +
+                ", country=" + country +
+                ", city=" + city +
+                ", isHttps=" + isHttps +
+                ", anonymity=" + anonymity +
+                ", connectionSpeed=" + connectionSpeed +
+                ", gmtLastValidate=" + gmtLastValidate +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                "}";
+    }
+
+    public String formatIpPort() {
         return ip + ":" + port;
     }
 }
