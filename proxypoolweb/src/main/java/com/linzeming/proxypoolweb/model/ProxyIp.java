@@ -1,61 +1,87 @@
 package com.linzeming.proxypoolweb.model;
 
-public class ProxyIp {
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author linzeming
+ * @since 2020-11-30
+ */
+public class ProxyIp implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * primary key
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * ip address
+     */
     private String ip;
+
+    /**
+     * port
+     */
     private Integer port;
-    private Double score;
-    private Long validateTimestamp;
-    private boolean lastValidateResult;
+
+    private String country;
+
+    private String city;
+
+    /**
+     * 是否支持https
+     */
+    private Integer isHttps;
+
+    /**
+     * 匿名度，0-透明，1-普通匿名，2-高度匿名
+     */
+    private Integer anonymity;
+
+    /**
+     * 0代表超时，单位是ms
+     */
+    private Integer connectionSpeed;
+
+    /**
+     * 上次验证时间
+     */
+    private LocalDateTime gmtLastValidate;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime gmtCreate;
+
+    /**
+     * 修改时间
+     */
+    private LocalDateTime gmtModified;
 
     public ProxyIp() {
     }
 
-    public ProxyIp(String ip, int port) {
+    public ProxyIp(String ip, Integer port) {
         this.ip = ip;
         this.port = port;
-        this.score = 0.0;
-        this.validateTimestamp = 0L;
     }
 
-    public ProxyIp(String ip, Integer port, Double score) {
-        this.ip = ip;
-        this.port = port;
-        this.score = score;
-        this.validateTimestamp = 0L;
+    public Integer getId() {
+        return id;
     }
 
-    public ProxyIp(String ip, String port) {
-        this.ip = ip;
-        this.port = Integer.valueOf(port);
-        this.score = 0.0;
-        this.validateTimestamp = 0L;
-    }
-
-    public ProxyIp(String ip, Integer port, Double score, Long validateTimestamp) {
-        this.ip = ip;
-        this.port = port;
-        this.score = score;
-        this.validateTimestamp = validateTimestamp;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public boolean isLastValidateResult() {
-        return lastValidateResult;
-    }
-
-    public void setLastValidateResult(boolean lastValidateResult) {
-        this.lastValidateResult = lastValidateResult;
-    }
-
-    public Long getValidateTimestamp() {
-        return validateTimestamp;
-    }
-
-    public void setValidateTimestamp(Long validateTimestamp) {
-        this.validateTimestamp = validateTimestamp;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getIp() {
@@ -66,42 +92,96 @@ public class ProxyIp {
         this.ip = ip;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
-    public Double getScore() {
-        return score;
+    public String getCountry() {
+        return country;
     }
 
-    public void setScore(Double score) {
-        this.score = score;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String formattedIpPort() {
-        return ip + ":" + port;
+    public String getCity() {
+        return city;
     }
 
-    public String formattedIpValidateTimestamp() {
-        return ip + ":" + validateTimestamp;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String formattedIpValidateTimestampResult() {
-        return ip + ":" + validateTimestamp + ":" + lastValidateResult;
+    public Integer getIsHttps() {
+        return isHttps;
+    }
+
+    public void setIsHttps(Integer isHttps) {
+        this.isHttps = isHttps;
+    }
+
+    public Integer getAnonymity() {
+        return anonymity;
+    }
+
+    public void setAnonymity(Integer anonymity) {
+        this.anonymity = anonymity;
+    }
+
+    public Integer getConnectionSpeed() {
+        return connectionSpeed;
+    }
+
+    public void setConnectionSpeed(Integer connectionSpeed) {
+        this.connectionSpeed = connectionSpeed;
+    }
+
+    public LocalDateTime getGmtLastValidate() {
+        return gmtLastValidate;
+    }
+
+    public void setGmtLastValidate(LocalDateTime gmtLastValidate) {
+        this.gmtLastValidate = gmtLastValidate;
+    }
+
+    public LocalDateTime getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(LocalDateTime gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public LocalDateTime getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(LocalDateTime gmtModified) {
+        this.gmtModified = gmtModified;
     }
 
     @Override
     public String toString() {
         return "ProxyIp{" +
-                "ip='" + ip + '\'' +
+                "id=" + id +
+                ", ip=" + ip +
                 ", port=" + port +
-                ", score=" + score +
-                ", validateTimestamp=" + validateTimestamp +
-                ", lastValidateResult=" + lastValidateResult +
-                '}';
+                ", country=" + country +
+                ", city=" + city +
+                ", isHttps=" + isHttps +
+                ", anonymity=" + anonymity +
+                ", connectionSpeed=" + connectionSpeed +
+                ", gmtLastValidate=" + gmtLastValidate +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                "}";
+    }
+
+    public String formatIpPort() {
+        return ip + ":" + port;
     }
 }

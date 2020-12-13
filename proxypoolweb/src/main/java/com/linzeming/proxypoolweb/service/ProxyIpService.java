@@ -1,39 +1,23 @@
 package com.linzeming.proxypoolweb.service;
 
-
-import com.linzeming.proxypoolweb.dao.ProxyIpDao;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.linzeming.proxypoolweb.model.ProxyIp;
-import com.linzeming.proxypoolweb.util.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.linzeming.proxypoolweb.model.ProxyIpValidateLogResult;
 
-import java.util.*;
+import java.util.List;
 
-@Service
-public class ProxyIpService {
-    @Autowired
-    ProxyIpDao proxyIpDao;
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author linzeming
+ * @since 2020-11-30
+ */
+public interface ProxyIpService extends IService<ProxyIp> {
+    List<ProxyIp> getLatestVerifiedProxyIpByPage(Page<ProxyIp> page);
 
-    public List<ProxyIp> getAvailableProxy(Integer count) {
-        if (count <= 0) {
-            return null;
-        }
-        List<ProxyIp> allProxyByScoreRange = proxyIpDao.getAllProxyByScoreRange(Constants.validatedProxyMaxScore, Constants.validatedProxyMaxScore);
-        if (allProxyByScoreRange == null) {
-            return null;
-        }
-        if (count >= allProxyByScoreRange.size()) {
-            return allProxyByScoreRange;
-        } else {
-            ArrayList<ProxyIp> rtnList = new ArrayList<>();
-            Iterator<ProxyIp> iterator = allProxyByScoreRange.iterator();
-            for (int i = 0; i < count; i++) {
-                if (iterator.hasNext()) {
-                    rtnList.add(iterator.next());
-                }
-            }
-            return rtnList;
-        }
+    List<ProxyIpValidateLogResult> selectProxyIpValidateResultByIpAndPort(String ip, Integer port);
 
-    }
 }
