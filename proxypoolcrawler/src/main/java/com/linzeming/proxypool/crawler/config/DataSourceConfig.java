@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.linzeming.proxypool.crawler.util.Constants;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class DataSourceConfig {
         dataSource.setUsername("javadev");
         dataSource.setPassword("javadev");
         dataSource.setUrl("jdbc:mysql://10.0.0.88:3306/proxypool?rewriteBatchedStatements=true");
-        dataSource.setMaxActive(8);
-        dataSource.setMaxWait(5000);
+        dataSource.setMaxActive(Constants.dataSourceMaxActive);
+        dataSource.setMaxWait(Constants.dataSourceMaxWait);
         return dataSource;
     }
 

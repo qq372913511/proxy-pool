@@ -69,7 +69,13 @@ public class CrawlerScheduledTaskCreator {
                         //对ip进行格式化
                         proxyIp.setIp(ProxyUtils.formatIp(proxyIp.getIp()));
                         //补充地理信息
-                        Geo.completeProxyIpGeoInfo(proxyIp);
+                        try {
+                            Geo.completeProxyIpGeoInfo(proxyIp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            proxyIp.setCountry("");
+                            proxyIp.setCity("");
+                        }
                     }
 
                     // 验证proxies的长度

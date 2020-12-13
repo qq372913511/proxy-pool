@@ -11,9 +11,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="proxy-pool" target="1.8" />
       <module name="proxy-pool-web" target="1.8" />
       <module name="proxyIp-pool" target="1.8" />
+      <module name="proxypool" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

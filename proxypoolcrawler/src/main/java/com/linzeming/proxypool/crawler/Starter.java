@@ -20,11 +20,11 @@ public class Starter {
         final Logger logger = LoggerFactory.getLogger(Starter.class);
         logger.info("Proxy pool init...");
 
-        // 初始化ValidateProxyIpQueueProducer线程 1条
+//         初始化ValidateProxyIpQueueProducer线程 1条
         logger.info("Create 1 Thread for ValidateProxyIpQueueProducer");
         new Thread(new ValidateProxyIpQueueProducer()).start();
 
-        //初始化 ValidateProxyIpQueueConsumer
+//        初始化 ValidateProxyIpQueueConsumer
         logger.info("Create {} Thread for ValidateProxyIpQueueConsumer", Constants.ValidateProxyIpQueueConsumerThreadCount);
         ThreadPoolTaskExecutor validateProxyIpQueueConsumerExecutor = (ThreadPoolTaskExecutor) applicationContext.getBean("validateProxyIpQueueConsumerExecutor");
         for (int i = 0; i < Constants.ValidateProxyIpQueueConsumerThreadCount; i++) {

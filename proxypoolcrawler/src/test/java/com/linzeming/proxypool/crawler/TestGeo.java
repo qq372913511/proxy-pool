@@ -7,9 +7,11 @@ import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.*;
 import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -47,10 +49,13 @@ public class TestGeo {
     @Test
     public void testDatabaseGeo() throws IOException, GeoIp2Exception {
         // A File object pointing to your GeoIP2 or GeoLite2 database
-        File database = new File("C:\\Users\\linze\\Desktop\\GeoLite2-City_20201208.tar\\GeoLite2-City_20201208\\GeoLite2-City.mmdb");
+        ClassPathResource classPathResource = new ClassPathResource("GeoLite2-City.mmdb");
+        InputStream inputStream = classPathResource.getInputStream();
+
+//        File database = new File("src/main/resources/GeoLite2-City.mmdb");
 // This creates the DatabaseReader object. To improve performance, reuse
 // the object across lookups. The object is thread-safe.
-        DatabaseReader reader = new DatabaseReader.Builder(database).build();
+        DatabaseReader reader = new DatabaseReader.Builder(inputStream).build();
 
         InetAddress ipAddress = InetAddress.getByName("182.52.90.117");
 
@@ -78,4 +83,5 @@ public class TestGeo {
         System.out.println(location.getLatitude());  // 44.9733
         System.out.println(location.getLongitude()); // -93.2323
     }
+
 }

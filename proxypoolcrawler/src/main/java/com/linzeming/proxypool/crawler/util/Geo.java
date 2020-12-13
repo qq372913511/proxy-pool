@@ -8,30 +8,38 @@ import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class Geo {
     final static Logger logger = LoggerFactory.getLogger(Geo.class);
-
-    // A File object pointing to your GeoIP2 or GeoLite2 database
-    static File database = new File("C:\\Users\\linze\\Desktop\\GeoLite2-City_20201208.tar\\GeoLite2-City_20201208\\GeoLite2-City.mmdb");
-    // This creates the DatabaseReader object. To improve performance, reuse
-// the object across lookups. The object is thread-safe.
     static DatabaseReader reader;
 
     static {
         try {
-            reader = new DatabaseReader.Builder(database).build();
+            InputStream inputStream = new ClassPathResource("GeoLite2-City.mmdb").getInputStream();
+            reader = new DatabaseReader.Builder(inputStream).build();
+            logger.info("Geo database load infomation: ");
+            logger.info(reader.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void completeProxyIpGeoInfo(ProxyIp proxyIp) {
+        //判断reader是否加载成功
+        if (reader == null) {
+            logger.warn("reader load failed!");
+            proxyIp.setCountry("");
+            proxyIp.setCity("");
+            return;
+        }
+
         // get ipAddress info
         InetAddress ipAddress;
         try {
