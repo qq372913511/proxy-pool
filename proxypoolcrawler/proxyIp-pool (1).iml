@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration />
-    </facet>
     <facet type="jpa" name="JPA">
       <configuration>
         <setting name="validation-enabled" value="true" />
-        <datasource-mapping>
-          <factory-entry name="proxyIp-pool" />
-        </datasource-mapping>
+        <datasource-mapping />
         <naming-strategy-map />
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
+  </component>
+  <component name="MavenCustomPomFilePath">
+    <option name="mavenPomFileUrl" value="file://$MODULE_DIR$/dependency-reduced-pom.xml" />
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
-    <content url="file://$MODULE_DIR$">
+    <content url="file://$MODULE_DIR$/src/main/java">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/main/resources">
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/test/java">
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -72,5 +76,9 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:4.1.1" level="project" />
   </component>
 </module>
