@@ -20,7 +20,7 @@
     <div>
         <table class="table">
             <tr>
-                <th scope="col">Id</th>
+<!--                <th scope="col">Id</th>-->
                 <th scope="col">Ip</th>
                 <th scope="col">Port</th>
                 <th scope="col">Country</th>
@@ -33,7 +33,7 @@
                 <th scope="col">History</th>
             </tr>
             <tr th:each="data : ${datas}">
-                <td th:text="${data.id}"></td>
+<!--                <td th:text="${data.id}"></td>-->
                 <td th:text="${data.ip}"></td>
                 <td th:text="${data.port}"></td>
                 <td th:text="${data.country}"></td>
@@ -43,7 +43,7 @@
                 <td th:text="${data.connectionSpeed}"></td>
                 <td th:text="${data.gmtLastValidate}"></td>
                 <td th:text="${data.gmtCreate}"></td>
-                <td><a class="link-success" th:href="@{ipHistory(ip=${data.ip},port=${data.port})}">history</a></td>
+                <td><a class="link-success" th:href="@{ipHistory(id=${data.id},ip=${data.ip},port=${data.port})}">history</a></td>
             </tr>
         </table>
     </div>

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,24 +21,23 @@ public class IpHistoryController {
 
     @GetMapping("/ipHistory")
     public String ipHistory(Model model,
+                            @RequestParam(value = "id", required = true) Integer proxyIpId,
                             @RequestParam(value = "ip", required = true) String ip,
                             @RequestParam(value = "port", required = true) String port) {
-        List<ProxyIpValidateLogResult> results = proxyIpService.selectProxyIpValidateResultByIpAndPort(ip, Integer.valueOf(port));
+        List<ProxyIpValidateLogResult> results = proxyIpService.findProxyIpIdLastDaysValidateResultLog(proxyIpId, 1D);
         model.addAttribute("ipPort", ip + ":" + port);
         model.addAttribute("datas", results);
 
-        //组装echart x轴数据和y轴数据
-        ArrayList<String> xaxisDatas = new ArrayList<>(results.size());
-        ArrayList<Long> yaxisDatas = new ArrayList<>(results.size());
-        for (ProxyIpValidateLogResult result:
-             results) {
-            xaxisDatas.add(result.getLocalDateTime());
-            yaxisDatas.add(Long.valueOf(result.getConnctionSpeed()));
+//        组装echart x轴数据和y轴数据
+        ArrayList<LocalDateTime> xaxisDatas = new ArrayList<>(results.size());
+        ArrayList<Integer> yaxisDatas = new ArrayList<>(results.size());
+        for (ProxyIpValidateLogResult result :
+                results) {
+            xaxisDatas.add(result.getGmtLastValidate());
+            yaxisDatas.add(result.getConnectionSpeed());
         }
         model.addAttribute("xaxisDatas", xaxisDatas);
         model.addAttribute("yaxisDatas", yaxisDatas);
         return "ipHistory";
     }
-
-
 }

@@ -65,8 +65,8 @@
                 <th scope="col">Connection Speed</th>
             </tr>
             <tr th:each="data : ${datas}">
-                <td th:text="${data.localDateTime}"></td>
-                <td th:text="${data.connctionSpeed}"></td>
+                <td th:text="${data.gmtLastValidate}"></td>
+                <td th:text="${data.connectionSpeed}"></td>
             </tr>
         </table>
     </div>

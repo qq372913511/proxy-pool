@@ -14,6 +14,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import redis.clients.jedis.JedisPool;
@@ -121,5 +127,26 @@ public class MainConfig {
 ////        resolver.setPrefix(this.mvcProperties.getView().getPrefix());
 ////        resolver.setSuffix(this.mvcProperties.getView().getSuffix());
 //        return resolver;
+//    }
+
+
+//    /**
+//     * MongoDB 配置
+//     */
+//    @Bean
+//    public MongoDbFactory mongoDbFactory() throws Exception {
+//        MongoClientURI uri = new MongoClientURI("mongodb://10.0.0.88:27017/proxy_pool?maxPoolSize=20&waitQueueMultiple=20");
+//        SimpleMongoDbFactory simpleMongoDbFactory = new SimpleMongoDbFactory(uri);
+//        return simpleMongoDbFactory;
+//    }
+
+
+//    @Bean
+//    public MongoTemplate mongoTemplate() throws Exception {
+//        //remove _class
+//        MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory()), new MongoMappingContext());
+//        converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+//        converter.afterPropertiesSet();
+//        return new MongoTemplate(mongoDbFactory(), converter);
 //    }
 }

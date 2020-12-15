@@ -1,24 +1,31 @@
 package com.linzeming.proxypool.crawler;
-
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.linzeming.proxypool.crawler.dao.ProxyIpValidateLogResultMongodbDao;
 import com.linzeming.proxypool.crawler.mapper.ProxyIpMapper;
 import com.linzeming.proxypool.crawler.model.ProxyIp;
+import com.linzeming.proxypool.crawler.model.ProxyIpValidateLogResult;
 import com.linzeming.proxypool.crawler.service.ProxyIpService;
 import com.linzeming.proxypool.crawler.util.SpringUtil;
 import org.junit.Test;
+import java.util.Random;
 
 import com.linzeming.proxypool.crawler.config.ContextMainConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 public class TestIOC {
     private final ApplicationContext ioc = new AnnotationConfigApplicationContext(ContextMainConfig.class);
@@ -92,8 +99,26 @@ public class TestIOC {
         proxyIpUpdateWrapper.eq("id", 1548324);
         proxyIpUpdateWrapper.set("is_https",1);
         proxyIpMapper.update(new ProxyIp("123.123.123.123", 12312), proxyIpUpdateWrapper);
-
-
     }
+
+
+    @Test
+    public void testMongodb(){
+        Random random = new Random();
+
+        for (int i = 0; i < 10_00000; i++) {
+            ProxyIpValidateLogResultMongodbDao dao = ioc.getBean("proxyIpValidateLogResultMongodbDao", ProxyIpValidateLogResultMongodbDao.class);
+            ProxyIpValidateLogResult proxyIpValidateLogResult = new ProxyIpValidateLogResult();
+            proxyIpValidateLogResult.setConnectionSpeed(random.nextInt());
+            proxyIpValidateLogResult.setGmtLastValidate(LocalDateTime.now());
+            proxyIpValidateLogResult.setProxyIpId(random.nextInt());
+            dao.insertProxyIpValidateLogResult(proxyIpValidateLogResult);
+            System.out.println(proxyIpValidateLogResult);
+        }
+
+//        System.out.println(mongoTemplate.findOne(new Query(where("name").is("Joe")), MongodbTestModel.class));
+//        mongoTemplate.dropCollection("proxyIp");
+    }
+
 
 }

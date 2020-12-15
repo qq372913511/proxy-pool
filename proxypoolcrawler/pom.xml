@@ -59,7 +59,6 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*.xml</include>
                     <include>**/*.properties</include>
                     <include>**/*.mmdb</include>
                 </includes>
@@ -172,6 +171,28 @@
             <artifactId>geoip2</artifactId>
             <version>2.15.0</version>
         </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.12.7</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
+
+
+
+
+
+
 
 
     </dependencies>

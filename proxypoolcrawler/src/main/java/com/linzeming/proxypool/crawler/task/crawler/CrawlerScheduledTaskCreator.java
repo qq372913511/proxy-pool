@@ -72,7 +72,7 @@ public class CrawlerScheduledTaskCreator {
                         try {
                             Geo.completeProxyIpGeoInfo(proxyIp);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.warn("no geo info for: {}",proxyIp.getIp());
                             proxyIp.setCountry("");
                             proxyIp.setCity("");
                         }
@@ -81,15 +81,11 @@ public class CrawlerScheduledTaskCreator {
                     // 验证proxies的长度
                     if (proxies.size() > 0) {
                         //加到透明性验证队列里面
-                        proxyIpService.insertProxyIpIgnoreIntoBatch(proxies);
-                        //                    proxyIpService.saveBatch(proxies, 1000);
-//                    for (ProxyIp proxyIp : proxies) {
-//                        try {
-//                            proxyIpService.save(proxyIp);
-//                            logger.info("[{}] " + "Add into NX Proxies List: {}", parserBeanName, proxyIp.toString());
-//                        } catch (Exception e) {
-//                        }
-//                    }
+                        try {
+                            proxyIpService.insertProxyIpIgnoreIntoBatch(proxies);
+                        } catch (Exception e) {
+                            logger.warn("insertProxyIpIgnoreIntoBatch failed");
+                        }
                     }
                 }
             };

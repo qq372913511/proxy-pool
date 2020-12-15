@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.linzeming.proxypool.crawler.model.ProxyIp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author linzeming
  * @since 2020-11-30
  */
+@Repository
 public interface ProxyIpMapper extends BaseMapper<ProxyIp> {
     int insertNewProxyIpIgnoreIntoBatch(List<ProxyIp> proxyIpList);
     int insertNewProxyIpIgnoreInto(ProxyIp proxyIp);
