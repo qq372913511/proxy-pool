@@ -20,17 +20,13 @@ public class IndexController {
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model, @RequestParam(value = "pageNum", required = false, defaultValue = "1") String pageNum) {
-        int pageSize = 15;
-
+        int pageSize = 30;
         Page<ProxyIp> proxyIpPage = new Page<>();
         proxyIpPage.setSize(pageSize);
         proxyIpPage.setCurrent(Long.parseLong(pageNum));
-
         List<ProxyIp> latestVerifiedProxyIpByPage = proxyIpService.getLatestVerifiedProxyIpByPage(proxyIpPage);
         model.addAttribute("datas", latestVerifiedProxyIpByPage);
         model.addAttribute("pageInfo", proxyIpPage);
-
-
         return "index";
     }
 

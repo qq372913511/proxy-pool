@@ -2,6 +2,7 @@ package com.linzeming.proxypool.crawler.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -17,6 +18,18 @@ import java.io.Serializable;
 public class ProxyIp implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+
+    private ObjectId _id;
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
+    }
+
 
     /**
      * primary key

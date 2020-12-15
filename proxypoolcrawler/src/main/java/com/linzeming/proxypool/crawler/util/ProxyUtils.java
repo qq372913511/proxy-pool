@@ -82,9 +82,9 @@ public final class ProxyUtils {
                 proxyIp.setAnonymity(0);
             }
             if (resString.toLowerCase().contains("proxy-connection")) {
-                proxyIp.setAnonymity(2);
-            } else {
                 proxyIp.setAnonymity(1);
+            } else {
+                proxyIp.setAnonymity(2);
             }
         } catch (IOException e) {
             //超时或者端口关闭
@@ -109,7 +109,6 @@ public final class ProxyUtils {
                 proxyIp.setIsHttps(0);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             proxyIp.setIsHttps(0);
         }
 
@@ -126,9 +125,9 @@ public final class ProxyUtils {
         while (ip.startsWith("0")) {
             ip = ip.substring(1);
         }
-        while (ip.contains(".0")) {
-            ip = ip.replace(".0", ".");
-        }
+//        while (ip.contains(".0")) {
+//            ip = ip.replace(".0", ".");
+//        }
         return ip;
 
     }

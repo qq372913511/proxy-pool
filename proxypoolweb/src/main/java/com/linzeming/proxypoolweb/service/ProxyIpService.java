@@ -17,7 +17,6 @@ import java.util.List;
  */
 public interface ProxyIpService extends IService<ProxyIp> {
     List<ProxyIp> getLatestVerifiedProxyIpByPage(Page<ProxyIp> page);
-
-    List<ProxyIpValidateLogResult> selectProxyIpValidateResultByIpAndPort(String ip, Integer port);
+    List<ProxyIpValidateLogResult> findProxyIpIdLastDaysValidateResultLog(Integer proxyIpId,Double daysCount);
 
 }

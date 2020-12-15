@@ -43,11 +43,11 @@ public class ProxyIpDaoRedisImpl implements ProxyIpRedisDao {
     }
 
 
-    @Override
-    public void logValidateResult(ProxyIpValidateLogResult proxyIpValidateLogResult) {
-        try (Jedis resource = jedisPool.getResource();) {
-            resource.hset(Constants.validateLogKeyPrefix + ":" + proxyIpValidateLogResult.getIpPort(),
-                    proxyIpValidateLogResult.getLocalDateTime(),proxyIpValidateLogResult.getConnctionSpeed());
-        }
-    }
+//    @Override
+//    public void logValidateResult(ProxyIpValidateLogResult proxyIpValidateLogResult) {
+//        try (Jedis resource = jedisPool.getResource();) {
+//            resource.hset(Constants.validateLogKeyPrefix + ":" + proxyIpValidateLogResult.getIpPort(),
+//                    proxyIpValidateLogResult.getLocalDateTime(),proxyIpValidateLogResult.getConnctionSpeed());
+//        }
+//    }
 }

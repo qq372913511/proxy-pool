@@ -1,0 +1,1 @@
+nohup java -jar /home/linzeming/java/proxyIp-pool-1.0-SNAPSHOT.jar > /mnt/raid0_4tb/log/proxy-pool/log.log 2>&1 &

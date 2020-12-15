@@ -19,7 +19,6 @@ import java.util.Set;
  */
 public class ValidateProxyIpQueueProducer implements Runnable {
     Logger logger = LoggerFactory.getLogger(ValidateProxyIpQueueProducer.class);
-
     ProxyIpRedisDao proxyIpRedisDao = (ProxyIpRedisDao) SpringUtil.getBean("proxyIpRedisDao");
     ProxyIpMapper proxyIpMapper = (ProxyIpMapper) SpringUtil.getBean("proxyIpMapper");
 

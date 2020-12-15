@@ -116,6 +116,36 @@
             <scope>test</scope>
         </dependency>
 
+
+
+        <!--Mongo DB-->
+        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver -->
+<!--        <dependency>-->
+<!--            <groupId>org.mongodb</groupId>-->
+<!--            <artifactId>mongodb-driver</artifactId>-->
+<!--            <version>3.12.7</version>-->
+<!--        </dependency>-->
+<!--&lt;!&ndash;         https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-mongodb</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-commons</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+
+
+        <!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
 

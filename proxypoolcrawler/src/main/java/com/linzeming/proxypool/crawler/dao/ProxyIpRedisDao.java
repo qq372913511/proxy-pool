@@ -11,7 +11,7 @@ public interface ProxyIpRedisDao {
 
     ProxyIp takeProxyFromValidateQueue();
 
-    void logValidateResult(ProxyIpValidateLogResult proxyIpValidateLogResult);
+//    void logValidateResult(ProxyIpValidateLogResult proxyIpValidateLogResult);
 
 
 
