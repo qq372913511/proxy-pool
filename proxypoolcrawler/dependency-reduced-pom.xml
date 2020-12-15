@@ -25,6 +25,13 @@
     </resources>
     <plugins>
       <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.7</version>
         <configuration>
@@ -69,9 +76,9 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-    <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
   </properties>
 </project>
 
